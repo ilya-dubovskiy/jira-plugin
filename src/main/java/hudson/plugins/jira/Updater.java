@@ -226,8 +226,8 @@ class Updater {
         if(result == null)
             return format(
                     wikiStyle ?
-                            "Integrated in [%2$s|%3$s]\n%4$s" :
-                            "Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
+                            "test1Integrated in [%2$s|%3$s]\n%4$s" :
+                            "test2Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
                     jenkinsRootUrl,
                     build,
                     Util.encode(jenkinsRootUrl + build.getUrl()),
@@ -235,8 +235,8 @@ class Updater {
         else
             return format(
                 wikiStyle ?
-                        "%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
-                        "%6$s: Integrated in Jenkins build %2$s (See [%4$s])\n%5$s",
+                        "test3%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
+                        "test4%6$s: Integrated in Jenkins build %2$s (See [%4$s])\n%5$s",
                 jenkinsRootUrl,
                 build,
                 result != null ? result.color.getImage() : null,
