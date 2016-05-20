@@ -219,14 +219,14 @@ class Updater {
      */
     private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) {
         Result result = build.getResult();
-		Job_name job_name = new build.getEnvironment(listener).get("JOB_NAME");
+	//	Job_name job_name = new build.getEnvironment(listener).get("JOB_NAME");
 		
         //if we run from workflow we dont known final result  
         if(result == null)
             return format(
                     wikiStyle ?
-                            "Integrated in [%2$s|%3$s]\n%4$s" :
-                            "Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
+                            "1 Integrated in [%2$s|%3$s]\n%4$s" :
+                            "2 Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
                     jenkinsRootUrl,
                     build,
                     Util.encode(jenkinsRootUrl + build.getUrl()),
@@ -234,8 +234,8 @@ class Updater {
         else
             return format(
                 wikiStyle ?
-                        "%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
-                        "This text produced by Ilya, JOB_NAME: %7$s",
+                        "3 %6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
+                        "4 This text produced by Ilya, JOB_NAME: ",
                 jenkinsRootUrl,
                 build,
                 result != null ? result.color.getImage() : null,
