@@ -236,7 +236,7 @@ class Updater {
         else
             return format(
                 wikiStyle ?
-                        "jobname: $job_name test3%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
+                        "jobname: " + job_name + " test3%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
                         "test4%6$s: Integrated in Jenkins build %2$s (See [%4$s])\n%5$s",
                 jenkinsRootUrl,
                 build,
