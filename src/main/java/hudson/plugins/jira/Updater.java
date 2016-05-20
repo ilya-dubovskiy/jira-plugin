@@ -222,7 +222,7 @@ class Updater {
      */
     private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) {
         Result result = build.getResult();
-		Map vars = build.getBuildVariables();
+		def vars = build.getBuildVariables();
 //		String job_name = build.environment.get( "JOB_NAME" );
         //if we run from workflow we dont known final result  
         if(result == null)
