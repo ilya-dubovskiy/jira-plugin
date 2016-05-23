@@ -1,6 +1,21 @@
 package hudson.plugins.jira;
 
-import static java.lang.String.format;
+import com.atlassian.jira.rest.client.api.RestClientException;
+import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.google.common.base.Strings;
+import hudson.Util;
+import hudson.EnvVars;
+import hudson.model.Hudson;
+import hudson.model.Result;
+import hudson.model.Run;
+import hudson.model.TaskListener;
+import hudson.plugins.jira.selector.AbstractIssueSelector;
+import hudson.scm.ChangeLogSet;
+import hudson.scm.ChangeLogSet.AffectedFile;
+import hudson.scm.ChangeLogSet.Entry;
+import hudson.scm.RepositoryBrowser;
+import hudson.scm.SCM;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -9,27 +24,11 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.lang.StringUtils;
-import com.atlassian.jira.rest.client.api.RestClientException;
-import com.google.common.base.Strings;
-import hudson.Util;
-import hudson.model.Hudson;
-import hudson.model.Result;
-import hudson.model.Run;
-import hudson.model.TaskListener;
-import hudson.plugins.jira.selector.AbstractIssueSelector;
-import hudson.scm.ChangeLogSet;
-import hudson.scm.RepositoryBrowser;
-import hudson.scm.SCM;
-import hudson.scm.ChangeLogSet.AffectedFile;
-import hudson.scm.ChangeLogSet.Entry;
+
+import static java.lang.String.format;
 
 /**
  * Actual JIRA update logic.
@@ -194,18 +193,17 @@ class Updater {
 
     }
 
-    private static List<JiraIssue> getJiraIssues(
-            Set<String> ids, JiraSession session, PrintStream logger) throws RemoteException {
+    private static List<JiraIssue> getJiraIssues(Set<String> ids, JiraSession session, PrintStream logger) throws RemoteException {
         List<JiraIssue> issues = new ArrayList<JiraIssue>(ids.size());
         for (String id : ids) {
-            if (!session.existsIssue(id)) {
-                if (debug) {
-                    logger.println(id + " looked like a JIRA issue but it wasn't");
-                }
-                continue;   // token looked like a JIRA issue but it's actually not.
-            }
 
-            issues.add(new JiraIssue(session.getIssue(id)));
+            Issue issue = session.getIssue(id);
+            if (issue == null) {
+                logger.println(id + " issue doesn't exist in JIRA");
+                continue;
+            }
+            
+            issues.add(new JiraIssue(issue));
         }
         return issues;
     }
@@ -222,15 +220,16 @@ class Updater {
      */
     private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) {
         Result result = build.getResult();
-		String BUILD_DISPLAY_NAME = env.BUILD_DISPLAY_NAME;
-//		def vars = build.getBuildVariables();
-//		String job_name = build.environment.get( "JOB_NAME" );
         //if we run from workflow we dont known final result  
+	EnvVars vars = build.getEnvironment(TaskListener.NULL);
+        String strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
+
+
         if(result == null)
             return format(
                     wikiStyle ?
-                            "test1Integrated in [%2$s|%3$s]\n%4$s" :
-                            "test2Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
+                            "Integrated in [%2$s|%3$s]\n%4$s" :
+                            "Integrated in Jenkins build %2$s (See [%3$s])\n%4$s",
                     jenkinsRootUrl,
                     build,
                     Util.encode(jenkinsRootUrl + build.getUrl()),
@@ -238,14 +237,15 @@ class Updater {
         else
             return format(
                 wikiStyle ?
-                        "version: %7$s test3%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
-                        "test4%6$s: Integrated in Jenkins build %2$s (See [%4$s])\n%5$s",
+                        "%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
+                        "%6$s: %7$s",
                 jenkinsRootUrl,
                 build,
                 result != null ? result.color.getImage() : null,
                 Util.encode(jenkinsRootUrl + build.getUrl()),
                 getScmComments(wikiStyle, build, recordScmChanges, jiraIssue),
-                result.toString());
+                result.toString(),
+                strJiraCustomString);
     }
 
     private String getScmComments(boolean wikiStyle, Run<?, ?> run, boolean recordScmChanges, JiraIssue jiraIssue) {
