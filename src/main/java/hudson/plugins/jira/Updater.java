@@ -218,6 +218,8 @@ class Updater {
             } catch (IOException e) 
 		{
 		}
+		} catch (InterruptedException e) {
+        }
 	return strJiraCustomString;
     }
 
