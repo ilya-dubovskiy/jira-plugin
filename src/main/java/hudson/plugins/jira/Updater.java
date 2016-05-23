@@ -218,7 +218,7 @@ class Updater {
      *  [https://bitbucket.org/user/repo/changeset/9af8e4c4c909/])\r
      * </pre>
      */
-    private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) {
+    private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) throws IOException, InterruptedException {
         Result result = build.getResult();
         //if we run from workflow we dont known final result  
 	EnvVars vars = build.getEnvironment(TaskListener.NULL);
