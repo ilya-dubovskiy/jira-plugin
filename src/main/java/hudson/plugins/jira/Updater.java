@@ -218,7 +218,7 @@ class Updater {
             } catch (Exception e) 
 		{
 			strJiraCustomString = "";
-			LOGGER.log(Level.INFO, strJiraCustomString);
+			LOGGER.log(Level.ERROR, strJiraCustomString);
 		}
 	LOGGER.log(Level.INFO, strJiraCustomString);
 	return strJiraCustomString;
@@ -238,8 +238,11 @@ class Updater {
         Result result = build.getResult();
         //if we run from workflow we dont known final result  
            String strJiraCustomString = GetCustomJiraString(build);
-		   
-        if(!strJiraCustomString.isEmpty())
+		
+		
+		
+        if (strJiraCustomString != null
+			&& !strJiraCustomString.isEmpty())
 		{
 		   LOGGER.log(Level.INFO, "stringJira isEmpty");
 		   return strJiraCustomString;
