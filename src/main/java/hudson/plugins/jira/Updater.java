@@ -208,6 +208,19 @@ class Updater {
         return issues;
     }
 
+    private String GetCustomJiraString(Run<?, ?> build)
+    {
+            String strJiraCustomString = "";
+            try {
+
+			EnvVars vars = build.getEnvironment(TaskListener.NULL);
+        		strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
+            } catch (IOException e) 
+		{
+		}
+	return strJiraCustomString;
+    }
+
 
     /**
      * Creates a comment to be used in JIRA for the build.
@@ -218,12 +231,10 @@ class Updater {
      *  [https://bitbucket.org/user/repo/changeset/9af8e4c4c909/])\r
      * </pre>
      */
-    private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue) throws IOException, InterruptedException {
+    private String createComment(Run<?, ?> build, boolean wikiStyle, String jenkinsRootUrl, boolean recordScmChanges, JiraIssue jiraIssue)  {
         Result result = build.getResult();
         //if we run from workflow we dont known final result  
-	EnvVars vars = build.getEnvironment(TaskListener.NULL);
-        String strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
-
+           String strJiraCustomString = GetCustomJiraString(build);
 
         if(result == null)
             return format(
