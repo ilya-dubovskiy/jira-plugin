@@ -210,14 +210,14 @@ class Updater {
 
     private String GetCustomJiraString(Run<?, ?> build)
     {
-            String strJiraCustomString = "";
+//            String strJiraCustomString = "";
             try {
 
 			EnvVars vars = build.getEnvironment(TaskListener.NULL);
         		strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
             } catch (Exception e) 
 		{
-			String strJiraCustomString = "";
+			strJiraCustomString = "";
 		}
 	return strJiraCustomString;
     }
