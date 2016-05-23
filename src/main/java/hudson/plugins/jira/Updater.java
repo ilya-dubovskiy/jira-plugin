@@ -218,7 +218,7 @@ class Updater {
             } catch (Exception e) 
 		{
 			strJiraCustomString = "";
-			LOGGER.log(Level.ERROR, strJiraCustomString);
+			LOGGER.warning(Level.INFO, strJiraCustomString);
 		}
 	LOGGER.log(Level.INFO, strJiraCustomString);
 	return strJiraCustomString;
