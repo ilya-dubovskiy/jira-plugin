@@ -259,7 +259,7 @@ class Updater {
                 result != null ? result.color.getImage() : null,
                 Util.encode(jenkinsRootUrl + build.getUrl()),
                 getScmComments(wikiStyle, build, recordScmChanges, jiraIssue),
-                result.toString(),
+                result.toString());
     }
 
     private String getScmComments(boolean wikiStyle, Run<?, ?> run, boolean recordScmChanges, JiraIssue jiraIssue) {
