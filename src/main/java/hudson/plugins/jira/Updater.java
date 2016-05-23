@@ -218,7 +218,9 @@ class Updater {
             } catch (Exception e) 
 		{
 			strJiraCustomString = "";
+			LOGGER.log(Level.INFO, strJiraCustomString);
 		}
+	LOGGER.log(Level.INFO, strJiraCustomString);
 	return strJiraCustomString;
     }
 
@@ -242,6 +244,8 @@ class Updater {
 		   return strJiraCustomString;
 		}
 
+		LOGGER.log(Level.INFO, "if(result == null)");
+		
         if(result == null)
             return format(
                     wikiStyle ?
