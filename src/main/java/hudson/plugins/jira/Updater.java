@@ -215,11 +215,8 @@ class Updater {
 
 			EnvVars vars = build.getEnvironment(TaskListener.NULL);
         		strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
-            } catch (IOException e) 
+            } catch (Exception e) 
 		{
-		}
-		} catch (InterruptedException e) {
-        }
 	return strJiraCustomString;
     }
 
