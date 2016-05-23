@@ -217,6 +217,7 @@ class Updater {
         		strJiraCustomString = vars.get("JIRA_UPDATER_CUSTOM_STRING");
             } catch (Exception e) 
 		{
+		}
 	return strJiraCustomString;
     }
 
