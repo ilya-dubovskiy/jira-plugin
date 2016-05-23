@@ -235,6 +235,10 @@ class Updater {
         Result result = build.getResult();
         //if we run from workflow we dont known final result  
            String strJiraCustomString = GetCustomJiraString(build);
+		   
+        if(strJiraCustomString != "")		   
+		   return strJiraCustomString
+	   
 
         if(result == null)
             return format(
@@ -249,14 +253,13 @@ class Updater {
             return format(
                 wikiStyle ?
                         "%6$s: Integrated in !%1$simages/16x16/%3$s! [%2$s|%4$s]\n%5$s" :
-                        "%6$s: %7$s",
+                        "%6$s: Integrated in Jenkins build %2$s (See [%4$s])\n%5$s",
                 jenkinsRootUrl,
                 build,
                 result != null ? result.color.getImage() : null,
                 Util.encode(jenkinsRootUrl + build.getUrl()),
                 getScmComments(wikiStyle, build, recordScmChanges, jiraIssue),
                 result.toString(),
-                strJiraCustomString);
     }
 
     private String getScmComments(boolean wikiStyle, Run<?, ?> run, boolean recordScmChanges, JiraIssue jiraIssue) {
