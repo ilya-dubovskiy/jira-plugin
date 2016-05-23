@@ -237,7 +237,7 @@ class Updater {
            String strJiraCustomString = GetCustomJiraString(build);
 		   
         if(strJiraCustomString != "")		   
-		   return strJiraCustomString
+		   return strJiraCustomString;
 	   
 
         if(result == null)
