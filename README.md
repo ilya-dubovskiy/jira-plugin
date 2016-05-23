@@ -52,3 +52,9 @@ git-plugin.  Tests help us assure that we're delivering a reliable
 plugin, and that we've communicated our intent to other developers in
 a way that they can detect when they run tests.
 
+Nitro additions
+============================
+in order to pass custom comment to Jira, 
+set JIRA_UPDATER_CUSTOM_STRING variable 
+(in groovy script or elsewhere)
+
