@@ -57,4 +57,6 @@ Nitro additions
 in order to pass custom comment to Jira, 
 set JIRA_UPDATER_CUSTOM_STRING variable 
 (in groovy script or elsewhere)
+to create comments as links, use example below:
+[testing html comments|http://google.com]
 
