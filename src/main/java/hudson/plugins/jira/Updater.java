@@ -239,7 +239,7 @@ class Updater {
         //if we run from workflow we dont known final result  
            String strJiraCustomString = GetCustomJiraString(build);
 		   
-        if(!strJiraCustomString.equals(""))
+        if(strJiraCustomString <> "")
 		{
 		   return strJiraCustomString;
 		}
