@@ -1,4 +1,3 @@
-
 Jenkins JIRA Plugin
 ===================
 
